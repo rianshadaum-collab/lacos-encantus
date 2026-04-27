@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carrinho - Laços Encantus</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #fff, #ffe6f2);
+  min-height: 100vh;
+}
+
+header {
+  background: #fff;
+  padding: 10px;
+  text-align: center;
+  border-bottom: 2px solid gold;
+}
+
+.logo { width: 80px; cursor: pointer; }
+.logo-fallback {
+  width: 80px; height: 80px;
+  display: none; margin: 0 auto;
+  background: gold; border-radius: 50%;
+  align-items: center; justify-content: center;
+  font-weight: 600; font-size: 13px; color: #fff; cursor: pointer;
+}
+
+nav {
+  background: #ff4da6;
+  padding: 10px;
+  display: flex;
+  justify-content: space-around;
+}
+nav a { color: white; text-decoration: none; font-weight: 500; font-size: 14px; }
+
+.container {
+  padding: 20px;
+  max-width: 600px;
+  margin: auto;
+}
+
+h2 {
+  text-align: center;
+  font-family: 'Great Vibes', cursive;
+  font-size: 34px;
+  color: #d4af37;
+}
+
+/* CARD DE ITEM */
+.item {
+  background: white;
+  border-radius: 15px;
+  padding: 18px 18px 14px;
+  margin: 12px 0;
+  border: 1px solid #ffd6e7;
+  position: relative;
+}
+
+.item-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.item-badge {
+  background: #ff4da6;
+  color: white;
+  border-radius: 8px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.item-nome {
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+  flex: 1;
+}
+
+.item-detalhes {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #777;
+  line-height: 1.8;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 10px;
+}
+
+.item-detalhe {
+  display: flex;
+  gap: 4px;
+}
+.item-detalhe strong { color: #555; }
+
+.item-preco {
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ff4da6;
+}
+
+.remove {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Caixa de personalização inline */
+.personalizacao-box {
+  margin-top: 10px;
+  background: #fff8f5;
+  border: 1px dashed #ffb3d9;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+}
+.personalizacao-box label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: #ff4da6;
+  margin-bottom: 5px;
+}
+.personalizacao-box input {
+  width: 100%;
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: 1.5px solid #ffd6e7;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  outline: none;
+  transition: 0.2s;
+  margin: 0;
+}
+.personalizacao-box input:focus { border-color: #ff4da6; }
+
+/* Formulário de entrega */
+.form {
+  background: white;
+  padding: 18px;
+  border-radius: 12px;
+  margin-top: 18px;
+  border: 1px solid #ffd6e7;
+}
+
+.form b { font-size: 14px; color: #333; }
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  outline: none;
+  transition: 0.2s;
+}
+input:focus, select:focus { border-color: #ff4da6; }
+
+input.erro {
+  border: 2px solid #ff4d4d !important;
+  background: #fff0f0;
+}
+
+/* Total */
+.total-box {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #ffd6e7;
+  padding: 16px 18px;
+  margin-top: 16px;
+  font-size: 14px;
+  color: #555;
+}
+.total-linha {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+.total-linha.destaque {
+  font-size: 17px;
+  font-weight: 700;
+  color: #d4af37;
+  border-top: 1px solid #f0e0ea;
+  margin-top: 8px;
+  padding-top: 10px;
+}
+
+/* Botões */
+button {
+  border: none;
+  padding: 14px;
+  width: 100%;
+  margin-top: 12px;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.btn-wpp {
+  background: #25D366;
+  color: white;
+}
+.btn-wpp:hover { background: #1da851; }
+
+.btn-limpar {
+  background: #f5f5f5;
+  color: #888;
+  font-size: 13px;
+  padding: 10px;
+}
+.btn-limpar:hover { background: #ebebeb; }
+
+.empty {
+  text-align: center;
+  margin-top: 50px;
+  color: #777;
+  font-size: 15px;
+}
+.empty a {
+  display: inline-block;
+  margin-top: 15px;
+  background: #ff4da6;
+  color: white;
+  padding: 10px 24px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* POPUP ERRO */
+.popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.popup.ativo { display: flex; }
+
+.popup-content {
+  background: white;
+  padding: 28px 24px;
+  border-radius: 16px;
+  text-align: center;
+  max-width: 300px;
+  width: 90%;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  animation: popIn 0.2s ease;
+}
+@keyframes popIn {
+  from { transform: scale(0.85); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+.popup-content h3 { color: #e63946; margin-bottom: 8px; font-size: 16px; }
+.popup-content p  { color: #777; font-size: 13px; margin-bottom: 18px; }
+.popup-content button {
+  background: #f5f5f5;
+  color: #555;
+  border: 1.5px solid #eee;
+  width: auto;
+  padding: 9px 24px;
+  font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <img
+    src="logo.png" class="logo" alt="Logo"
+    onclick="window.location.href='index.html'"
+    onerror="this.style.display='none'; document.querySelector('.logo-fallback').style.display='flex';"
+  >
+  <div class="logo-fallback" onclick="window.location.href='index.html'">Terço</div>
+</header>
+
+<nav>
+  <a href="index.html">Início</a>
+  <a href="terco.html">Montar</a>
+  <a href="produtos.html">Produtos</a>
+  <a href="carrinho.html">🛒 Carrinho</a>
+</nav>
+
+<div class="container">
+
+  <h2>Seu Carrinho 🛒</h2>
+
+  <div id="lista"></div>
+
+  <div id="secao-entrega" style="display:none;">
+    <div class="form">
+      <b>📍 Dados de entrega</b>
+      <input id="nomeCliente" placeholder="Seu nome completo">
+      <input id="endereco" placeholder="Rua, número, complemento">
+      <input id="bairro" placeholder="Bairro">
+      <select id="frete" onchange="render()">
+        <option value="0">Centro (Grátis)</option>
+        <option value="5">Outros bairros (+R$ 5,00)</option>
+        <option value="15">Outras cidades (+R$ 15,00)</option>
+      </select>
+    </div>
+
+    <div class="total-box" id="total-box"></div>
+
+    <button class="btn-wpp" onclick="finalizarWhatsApp()">
+      📲 Finalizar no WhatsApp
+    </button>
+    <button class="btn-limpar" onclick="limparCarrinho()">🗑 Esvaziar carrinho</button>
+
+    <p style="text-align:center;color:#999;font-size:12px;margin-top:12px;">
+      ⏳ Produtos personalizados: prazo médio de até 15 dias úteis.
+    </p>
+  </div>
+
+</div>
+
+<div class="popup" id="popupErro">
+  <div class="popup-content">
+    <h3>⚠️ Atenção</h3>
+    <p id="popupErroMsg">Preencha todos os dados de entrega.</p>
+    <button onclick="fecharPopup()">Entendi</button>
+  </div>
+</div>
+
+<script>
+
+let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+
+/* =============================================
+   MAPEAMENTO DE RÓTULOS AMIGÁVEIS
+   ============================================= */
+const tipoLabels = {
+  pulso:       '📿 Pulso',
+  tradicional: '🙏 Tradicional',
+  chaveiro:    '🔑 Chaveiro',
+  veiculo:     '🚗 Veículo',
+  noiva:       '💍 Noiva',
+  luxo:        '✨ Luxo',
+  infantil:    '🧸 Infantil',
+  embalagem:   '🎁 Embalagem'
+};
+
+const nomeTipo = {
+  pulso:       'Terço de Pulso',
+  tradicional: 'Terço Tradicional',
+  chaveiro:    'Chaveiro',
+  veiculo:     'Terço de Veículo',
+  noiva:       'Terço de Noiva',
+  luxo:        'Terço Luxo',
+  infantil:    'Terço Infantil',
+  embalagem:   'Embalagem'
+};
+
+/* Tipos que possuem personalização textual */
+const tiposComPersonalizacao = ['noiva', 'embalagem'];
+
+/* Tipos sem cor/mistério */
+const tiposSemCorMisterio = ['embalagem'];
+
+/* =============================================
+   RENDER
+   ============================================= */
+function render() {
+  const lista = document.getElementById('lista');
+  const secao = document.getElementById('secao-entrega');
+  lista.innerHTML = '';
+
+  if (carrinho.length === 0) {
+    lista.innerHTML = `
+      <div class="empty">
+        <div style="font-size:48px">🛒</div>
+        <p>Seu carrinho está vazio.</p>
+        <a href="terco.html">Montar agora</a>
+      </div>`;
+    secao.style.display = 'none';
+    return;
+  }
+
+  secao.style.display = 'block';
+  let subtotal = 0;
+
+  carrinho.forEach((item, index) => {
+    subtotal += Number(item.total) || 0;
+
+    const tipo = item.tipo || '';
+    const badge = tipoLabels[tipo] || tipo;
+    const nome  = item.nome || nomeTipo[tipo] || 'Produto';
+    const temPersonalizacao = tiposComPersonalizacao.includes(tipo);
+    const temCorMisterio    = !tiposSemCorMisterio.includes(tipo);
+
+    let detalhes = `
+      <div class="item-detalhe"><strong>Categoria:</strong> ${item.categoria || '—'}</div>
+      <div class="item-detalhe"><strong>Modelo:</strong> ${item.modelo || '—'}</div>
+    `;
+
+    if (temCorMisterio) {
+      detalhes += `
+        <div class="item-detalhe"><strong>Cor:</strong> ${item.cor || '—'}</div>
+        <div class="item-detalhe"><strong>Mistério:</strong> ${item.misterio || '—'}</div>
+      `;
+    }
+
+    let blocoPersonalizacao = '';
+    if (temPersonalizacao) {
+      const labelPers = tipo === 'noiva'
+        ? '✍️ Nome dos noivos / versículo'
+        : '✍️ Mensagem personalizada';
+      blocoPersonalizacao = `
+        <div class="personalizacao-box">
+          <label>${labelPers}</label>
+          <input
+            type="text"
+            placeholder="Ex: Ana & João — 15/06/2025"
+            value="${escapeAttr(item.personalizacao || '')}"
+            oninput="atualizarPersonalizacao(${index}, this.value)"
+          >
+        </div>
+      `;
+    }
+
+    lista.innerHTML += `
+      <div class="item">
+        <button class="remove" onclick="remover(${index})" title="Remover">×</button>
+        <div class="item-header">
+          <span class="item-badge">${badge}</span>
+          <span class="item-nome">${nome}</span>
+        </div>
+        <div class="item-detalhes">${detalhes}</div>
+        ${blocoPersonalizacao}
+        <div class="item-preco">R$ ${Number(item.total).toFixed(2).replace('.', ',')}</div>
+      </div>
+    `;
+  });
+
+  const frete = Number(document.getElementById('frete').value) || 0;
+  const total = subtotal + frete;
+
+  document.getElementById('total-box').innerHTML = `
+    <div class="total-linha">
+      <span>Subtotal</span>
+      <span>R$ ${subtotal.toFixed(2).replace('.', ',')}</span>
+    </div>
+    <div class="total-linha">
+      <span>Frete</span>
+      <span>${frete === 0 ? 'Grátis' : 'R$ ' + frete.toFixed(2).replace('.', ',')}</span>
+    </div>
+    <div class="total-linha destaque">
+      <span>Total</span>
+      <span>R$ ${total.toFixed(2).replace('.', ',')}</span>
+    </div>
+  `;
+}
+
+function escapeAttr(str) {
+  return (str || '').replace(/"/g, '&quot;');
+}
+
+/* =============================================
+   AÇÕES
+   ============================================= */
+function remover(index) {
+  carrinho.splice(index, 1);
+  salvar();
+  render();
+}
+
+function atualizarPersonalizacao(index, valor) {
+  carrinho[index].personalizacao = valor;
+  salvar();
+}
+
+function limparCarrinho() {
+  if (!confirm('Deseja esvaziar o carrinho?')) return;
+  carrinho = [];
+  salvar();
+  render();
+}
+
+function salvar() {
+  localStorage.setItem('carrinho', JSON.stringify(carrinho));
+}
+
+/* =============================================
+   POPUP
+   ============================================= */
+function mostrarErro(msg) {
+  document.getElementById('popupErroMsg').textContent = msg || 'Preencha todos os dados de entrega.';
+  document.getElementById('popupErro').classList.add('ativo');
+}
+function fecharPopup() {
+  document.getElementById('popupErro').classList.remove('ativo');
+}
+document.getElementById('popupErro').addEventListener('click', function(e) {
+  if (e.target === this) fecharPopup();
+});
+
+/* =============================================
+   WHATSAPP
+   ============================================= */
+function gerarID() {
+  return 'PED-' + Date.now().toString().slice(-8);
+}
+
+function finalizarWhatsApp() {
+  if (carrinho.length === 0) return;
+
+  const nomeInput     = document.getElementById('nomeCliente');
+  const enderecoInput = document.getElementById('endereco');
+  const bairroInput   = document.getElementById('bairro');
+
+  const nome     = nomeInput.value.trim();
+  const endereco = enderecoInput.value.trim();
+  const bairro   = bairroInput.value.trim();
+
+  [nomeInput, enderecoInput, bairroInput].forEach(i => i.classList.remove('erro'));
+
+  if (!nome || !endereco || !bairro) {
+    if (!nome)     nomeInput.classList.add('erro');
+    if (!endereco) enderecoInput.classList.add('erro');
+    if (!bairro)   bairroInput.classList.add('erro');
+    mostrarErro('Preencha todos os dados de entrega antes de finalizar.');
+    return;
+  }
+
+  const id     = gerarID();
+  const frete  = Number(document.getElementById('frete').value) || 0;
+  let subtotal = 0;
+
+  let msg = '*LAÇOS ENCANTUS*\n';
+  msg += '─────────────────────\n';
+  msg += `🆔 Pedido: ${id}\n`;
+  msg += `📅 Data: ${new Date().toLocaleString('pt-BR')}\n`;
+  msg += '─────────────────────\n\n';
+  msg += '🛒 *ITENS DO PEDIDO*\n\n';
+
+  carrinho.forEach((item, i) => {
+    const val = Number(item.total) || 0;
+    subtotal += val;
+
+    const tipo = item.tipo || '';
+    const temCorMisterio = !['embalagem'].includes(tipo);
+
+    msg += `${i + 1}. *${item.nome || nomeTipo[tipo] || 'Produto'}*\n`;
+    msg += `   Tipo: ${nomeTipo[tipo] || tipo}\n`;
+    msg += `   Categoria: ${item.categoria || '—'}\n`;
+    msg += `   Modelo: ${item.modelo || '—'}\n`;
+    if (temCorMisterio) {
+      msg += `   Cor: ${item.cor || '—'}\n`;
+      msg += `   Mistério/Pingente: ${item.misterio || '—'}\n`;
+    }
+    if (item.personalizacao) {
+      msg += `   ✍️ Personalização: ${item.personalizacao}\n`;
+    }
+    msg += `   💰 Valor: R$ ${val.toFixed(2).replace('.', ',')}\n\n`;
+  });
+
+  const total = subtotal + frete;
+
+  msg += '─────────────────────\n';
+  msg += '📍 *DADOS DE ENTREGA*\n';
+  msg += `Nome: ${nome}\n`;
+  msg += `Endereço: ${endereco}\n`;
+  msg += `Bairro: ${bairro}\n\n`;
+  msg += '─────────────────────\n';
+  msg += `Subtotal: R$ ${subtotal.toFixed(2).replace('.', ',')}\n`;
+  msg += `Frete: ${frete === 0 ? 'Grátis' : 'R$ ' + frete.toFixed(2).replace('.', ',')}\n`;
+  msg += `*TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*\n\n`;
+  msg += '⏳ Prazo: até 15 dias úteis para personalizados.\n';
+  msg += 'Aguardo confirmação do pedido!';
+
+  window.open(
+    'https://wa.me/5587981739920?text=' + encodeURIComponent(msg),
+    '_blank'
+  );
+
+  // Limpa carrinho após envio
+  carrinho = [];
+  salvar();
+  render();
+}
+
+render();
+
+</script>
+</body>
+</html>

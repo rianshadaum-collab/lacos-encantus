@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laços Encantus — Terços Personalizados</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Monte seu terço personalizado com fé e estilo. Laços Encantus — terços artesanais feitos com amor e entregues na sua casa.">
+  <meta name="keywords" content="terço personalizado, terço artesanal, laços encantus, terço católico">
+  <meta name="author" content="Laços Encantus">
+
+  <!-- Open Graph (WhatsApp, Facebook) -->
+  <meta property="og:title" content="Laços Encantus — Terços Personalizados">
+  <meta property="og:description" content="Monte seu terço do seu jeito e receba em casa. +2000 terços já enviados!">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://media.discordapp.net/attachments/1496138227331891282/1497288558875250828/7ec1137f-84bb-451d-8063-dcc4e4bd2a73.jpg?ex=69ecfa22&is=69eba8a2&hm=a48bb20aa13b7533764a7f7cfb671a9dcb9041400782650ab40d6bbbbda9e68c&=&format=webp&width=1676&height=838">
+
+  <!-- Fontes -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --gold: #d4af37;
+      --gold-light: #f0d060;
+      --pink: #ff4da6;
+      --pink-dark: #e0398e;
+      --pink-soft: #fff0f6;
+      --text: #222;
+      --text-mid: #444;
+      --text-light: #888;
+      --white: #fff;
+      --radius: 14px;
+      --shadow: 0 6px 24px rgba(0,0,0,0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: var(--white);
+      color: var(--text);
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--white);
+      padding: 14px 20px;
+      text-align: center;
+      border-bottom: 2px solid var(--gold);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(212,175,55,0.15);
+    }
+
+    .logo {
+      width: 80px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--pink);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    nav a {
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+
+    nav a:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    /* ── DIVISOR ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 20px 15px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1.5px;
+      background: var(--gold);
+      opacity: 0.6;
+    }
+
+    .divider span {
+      margin: 0 12px;
+      color: var(--gold);
+      font-size: 16px;
+    }
+
+    /* ── BANNER ── */
+    .banner {
+      padding: 50px 20px 40px;
+      text-align: center;
+      background: linear-gradient(135deg, var(--white), #ffe6f2);
+    }
+
+    .banner h1 {
+      color: var(--gold);
+      font-size: clamp(22px, 5vw, 34px);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+
+    .banner p {
+      font-size: 15px;
+      color: var(--text-mid);
+      margin-top: 0;
+    }
+
+    .banner-container {
+      position: relative;
+      width: 100%;
+      max-width: 960px;
+      margin: 25px auto 0;
+    }
+
+    .banner-container img {
+      width: 100%;
+      height: clamp(200px, 40vw, 380px);
+      object-fit: cover;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: block;
+    }
+
+    /* ── BOTÃO PRINCIPAL ── */
+    .banner-btn {
+      position: absolute;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: #1a1a1a;
+      border: none;
+      padding: 14px 28px;
+      font-weight: 700;
+      font-size: 15px;
+      font-family: 'Montserrat', sans-serif;
+      border-radius: 12px;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(212,175,55,0.4);
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+
+    .banner-btn:hover {
+      background: var(--gold-light);
+      transform: translateX(-50%) translateY(-2px);
+      box-shadow: 0 6px 20px rgba(212,175,55,0.5);
+    }
+
+    .banner-btn:active {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ── PROVA SOCIAL ── */
+    .stats {
+      background: var(--pink-soft);
+      padding: 16px 20px;
+      margin: 0 20px;
+      border-radius: var(--radius);
+      border: 1px solid #ffd6e7;
+      text-align: center;
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--gold);
+    }
+
+    /* ── SEÇÕES ── */
+    .section {
+      padding: 25px 20px;
+      text-align: center;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .section h2 {
+      font-size: clamp(20px, 4vw, 26px);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+    }
+
+    .section img {
+      width: 100%;
+      max-width: 700px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* ── CORAÇÃO DOURADO ── */
+    .heart-divider {
+      text-align: center;
+      color: var(--gold);
+      font-size: 18px;
+      margin: 16px 0;
+      letter-spacing: 6px;
+    }
+
+    /* ── CONTATO ── */
+    .contact-section {
+      padding: 30px 20px;
+      text-align: center;
+      background: var(--pink-soft);
+    }
+
+    .contact-section h2 {
+      font-size: clamp(20px, 4vw, 26px);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--pink);
+      color: var(--white);
+      text-decoration: none;
+      padding: 12px 22px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .contact-link:hover {
+      background: var(--pink-dark);
+      transform: translateY(-2px);
+    }
+
+    .contact-link.whatsapp {
+      background: #25D366;
+    }
+
+    .contact-link.whatsapp:hover {
+      background: #1eba57;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: var(--pink);
+      color: var(--white);
+      padding: 18px 20px;
+      font-size: 13px;
+      text-align: center;
+      letter-spacing: 0.3px;
+    }
+
+    /* ── RESPONSIVIDADE ── */
+    @media (max-width: 480px) {
+      nav {
+        gap: 12px;
+      }
+
+      nav a {
+        font-size: 13px;
+      }
+
+      .banner-btn {
+        font-size: 13px;
+        padding: 12px 20px;
+        bottom: 12px;
+      }
+
+      .stats {
+        margin: 0 12px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <img src="logo.png" class="logo" onclick="voltarInicio()" alt="Logo Laços Encantus">
+  </header>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html">Início</a>
+    <a href="terco.html">Montar</a>
+    <a href="produtos.html">Produtos</a>
+    <a href="carrinho.html">Carrinho</a>
+  </nav>
+
+  <!-- BANNER -->
+  <div class="banner">
+    <h1>Monte seu terço com fé e estilo</h1>
+    <p>Personalize do seu jeito e receba em casa</p>
+
+    <div class="banner-container">
+      <img
+        src="https://media.discordapp.net/attachments/1496138227331891282/1497288558875250828/7ec1137f-84bb-451d-8063-dcc4e4bd2a73.jpg?ex=69ecfa22&is=69eba8a2&hm=a48bb20aa13b7533764a7f7cfb671a9dcb9041400782650ab40d6bbbbda9e68c&=&format=webp&width=1676&height=838"
+        alt="Terços artesanais personalizados Laços Encantus"
+      >
+      <button class="banner-btn" onclick="irParaTerco()">✨ Montar Meu Terço</button>
+    </div>
+  </div>
+
+  <div class="divider"><span>💛</span></div>
+
+  <!-- PROVA SOCIAL -->
+  <div class="stats">
+    ✨ +2000 terços personalizados já enviados com amor
+  </div>
+
+  <div class="divider"><span>💛</span></div>
+
+  <!-- PERSONALIZADOS -->
+  <div class="section">
+    <h2>Personalizados</h2>
+    <img
+      src="https://media.discordapp.net/attachments/1496138227331891282/1497299494528876686/WhatsApp_Image_2026-04-24_at_15.12.16.jpeg?ex=69ed0451&is=69ebb2d1&hm=fce0a19f0bb7bb9cea000bad0ab5733811c7906a2052351c3423cc722e2a8bb9&=&format=webp&width=1141&height=953"
+      alt="Terços personalizados feitos à mão - Laços Encantus"
+    >
+  </div>
+
+  <div class="heart-divider">💛 ✝ 💛</div>
+
+  <!-- TERÇOS PRONTOS -->
+  <div class="section">
+    <h2>Terços Prontos</h2>
+    <img
+      src="https://media.discordapp.net/attachments/1496138227331891282/1496210710148153424/6675570c-0c3e-419f-9295-0a0a0744bd54.jpg"
+      alt="Terços prontos disponíveis na loja - Laços Encantus"
+    >
+  </div>
+
+  <div class="divider"><span>💛</span></div>
+
+  <!-- CONTATO -->
+  <div class="contact-section">
+    <h2>Entre em Contato</h2>
+    <div class="contact-links">
+      <a
+        href="https://wa.me/5587996454478"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="contact-link whatsapp"
+        aria-label="Fale conosco pelo WhatsApp"
+      >
+        📲 WhatsApp
+      </a>
+      <a
+        href="https://instagram.com/lacosencantus"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="contact-link"
+        aria-label="Siga no Instagram"
+      >
+        📸 @lacosencantus
+      </a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    © 2026 — Laços Encantus · Feito com fé e amor 💛
+  </footer>
+
+  <script>
+    function voltarInicio() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function irParaTerco() {
+      window.location.href = "terco.html";
+    }
+  </script>
+
+</body>
+</html>

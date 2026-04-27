@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monte seu Terço - Laços Encantus</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #fff, #ffe6f2);
+  min-height: 100vh;
+}
+
+header {
+  background: #fff;
+  padding: 10px;
+  text-align: center;
+  border-bottom: 2px solid gold;
+}
+
+.logo { width: 80px; cursor: pointer; }
+.logo-fallback {
+  width: 80px; height: 80px;
+  display: none; margin: 0 auto;
+  background: gold; border-radius: 50%;
+  align-items: center; justify-content: center;
+  font-weight: 600; font-size: 13px; color: #fff; cursor: pointer;
+}
+
+nav {
+  background: #ff4da6;
+  padding: 10px;
+  display: flex;
+  justify-content: space-around;
+}
+nav a { color: white; text-decoration: none; font-size: 14px; }
+
+h2 { text-align: center; color: #d4af37; }
+
+.box {
+  background: white;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 520px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+}
+
+/* Grade de tipos — 4 colunas em telas maiores */
+.tipo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 8px;
+}
+@media (max-width: 480px) {
+  .tipo-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.secao-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 18px 0 8px;
+}
+.secao-header label {
+  font-weight: 500;
+  font-size: 14px;
+  color: #555;
+  flex: 1;
+}
+.btn-voltar {
+  background: none;
+  border: 1.5px solid #ffb3d9;
+  color: #ff4da6;
+  border-radius: 8px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  width: auto;
+  margin: 0;
+  transition: 0.2s;
+}
+.btn-voltar:hover { background: #fff0f7; }
+
+.option-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.option {
+  border: 2px solid #eee;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  padding: 10px;
+  transition: 0.2s;
+  font-size: 13px;
+}
+.option:hover { transform: scale(1.02); border-color: #ffd966; }
+
+/* Imagem com fallback emoji */
+.option-media {
+  width: 100%;
+  height: 100px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fff5fb, #fffbe8);
+  font-size: 40px;
+}
+.option-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+  display: block;
+}
+
+.option.selected { border: 2px solid gold; background: #fffbeb; }
+
+/* Tipo card pequeno */
+.tipo-card {
+  border: 2px solid #eee;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  padding: 10px 6px;
+  transition: 0.2s;
+  font-size: 12px;
+  font-weight: 500;
+  color: #444;
+}
+.tipo-card:hover { transform: scale(1.03); border-color: #ffd966; background: #fffbeb; }
+.tipo-card.selected { border: 2px solid gold; background: #fffbeb; color: #b8860b; }
+.tipo-card .icone { font-size: 22px; margin-bottom: 4px; }
+
+.price {
+  color: #ff4da6;
+  font-weight: 600;
+  font-size: 13px;
+  display: block;
+  margin-top: 4px;
+}
+
+.total-box {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+.total-box span { color: #ff4da6; }
+
+.btn-principal {
+  width: 100%;
+  padding: 13px;
+  margin-top: 15px;
+  background: gold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  transition: 0.2s;
+}
+.btn-principal:hover { background: #e6c200; }
+
+/* POPUP SUCESSO */
+#popup-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+#popup-overlay.ativo { display: flex; }
+
+#popup-caixa {
+  background: #fff;
+  border-radius: 20px;
+  padding: 30px 28px;
+  max-width: 320px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+  animation: popIn 0.25s ease;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.85); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}
+
+.popup-icone { font-size: 48px; line-height: 1; margin-bottom: 12px; }
+
+#popup-caixa h3 { margin: 0 0 8px; color: #333; font-size: 18px; }
+#popup-caixa p  { margin: 0 0 20px; color: #777; font-size: 13px; line-height: 1.5; }
+
+.popup-botoes { display: flex; flex-direction: column; gap: 10px; }
+
+.popup-btn-carrinho {
+  background: #ff4da6; color: white;
+  border: none; border-radius: 10px;
+  padding: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600; font-size: 14px;
+  cursor: pointer; transition: 0.2s;
+}
+.popup-btn-carrinho:hover { background: #e6008c; }
+
+.popup-btn-continuar {
+  background: none;
+  border: 1.5px solid #eee;
+  border-radius: 10px; padding: 11px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px; color: #888;
+  cursor: pointer; transition: 0.2s;
+}
+.popup-btn-continuar:hover { border-color: #ccc; color: #555; }
+
+/* POPUP ERRO */
+#popup-erro-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+#popup-erro-overlay.ativo { display: flex; }
+
+#popup-erro-caixa {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px 22px;
+  max-width: 290px; width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  animation: popIn 0.2s ease;
+}
+#popup-erro-caixa h3 { margin: 0 0 6px; color: #e63946; font-size: 16px; }
+#popup-erro-caixa p  { margin: 0 0 16px; color: #777; font-size: 13px; }
+
+.popup-btn-fechar {
+  background: #f8f8f8;
+  border: 1.5px solid #eee;
+  border-radius: 8px; padding: 9px 20px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px; cursor: pointer; color: #555;
+}
+.popup-btn-fechar:hover { background: #f0f0f0; }
+
+/* Seção de personalização de texto */
+.campo-texto {
+  margin-top: 8px;
+}
+.campo-texto label {
+  font-size: 13px;
+  color: #555;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 4px;
+}
+.campo-texto input {
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1.5px solid #ddd;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  outline: none;
+  transition: 0.2s;
+}
+.campo-texto input:focus { border-color: #ff4da6; }
+</style>
+</head>
+
+<body>
+
+<header>
+  <img
+    src="logo.png" class="logo" alt="Logo"
+    onclick="irInicio()"
+    onerror="this.style.display='none'; document.querySelector('.logo-fallback').style.display='flex';"
+  >
+  <div class="logo-fallback" onclick="irInicio()">Laços</div>
+</header>
+
+<nav>
+  <a href="index.html">Início</a>
+  <a href="terco.html">Montar</a>
+  <a href="produtos.html">Produtos</a>
+  <a href="carrinho.html">🛒 Carrinho</a>
+</nav>
+
+<h2>Monte o Seu Terço</h2>
+
+<div class="box">
+
+  <!-- TIPO -->
+  <label style="font-weight:500; font-size:14px; color:#555;">Escolha o Tipo</label>
+  <div class="tipo-grid" id="tipo-grid">
+    <div class="tipo-card" onclick="selectTipo('pulso', this)">
+      <div class="icone">📿</div>Pulso
+    </div>
+    <div class="tipo-card" onclick="selectTipo('tradicional', this)">
+      <div class="icone">🙏</div>Tradicional
+    </div>
+    <div class="tipo-card" onclick="selectTipo('chaveiro', this)">
+      <div class="icone">🔑</div>Chaveiro
+    </div>
+    <div class="tipo-card" onclick="selectTipo('veiculo', this)">
+      <div class="icone">🚗</div>Veículo
+    </div>
+    <div class="tipo-card" onclick="selectTipo('noiva', this)">
+      <div class="icone">💍</div>Noiva
+    </div>
+    <div class="tipo-card" onclick="selectTipo('luxo', this)">
+      <div class="icone">✨</div>Luxo
+    </div>
+    <div class="tipo-card" onclick="selectTipo('infantil', this)">
+      <div class="icone">🧸</div>Infantil
+    </div>
+    <div class="tipo-card" onclick="selectTipo('embalagem', this)">
+      <div class="icone">🎁</div>Embalagem
+    </div>
+  </div>
+
+  <!-- CATEGORIAS -->
+  <div id="categorias-area" style="display:none;">
+    <div class="secao-header">
+      <label id="label-categoria">Categoria</label>
+      <button class="btn-voltar" onclick="voltar('categorias')">← Voltar</button>
+    </div>
+    <div id="categorias" class="option-grid"></div>
+  </div>
+
+  <!-- MODELOS -->
+  <div id="modelos-area" style="display:none;">
+    <div class="secao-header">
+      <label id="label-modelo">Modelo</label>
+      <button class="btn-voltar" onclick="voltar('modelos')">← Voltar</button>
+    </div>
+    <div id="modelos" class="option-grid"></div>
+  </div>
+
+  <!-- CORES -->
+  <div id="cores-area" style="display:none;">
+    <div class="secao-header">
+      <label id="label-cor">Cor</label>
+      <button class="btn-voltar" onclick="voltar('cores')">← Voltar</button>
+    </div>
+    <div id="cores" class="option-grid"></div>
+  </div>
+
+  <!-- MISTÉRIOS -->
+  <div id="misterios-area" style="display:none;">
+    <div class="secao-header">
+      <label id="label-misterio">Mistério</label>
+      <button class="btn-voltar" onclick="voltar('misterios')">← Voltar</button>
+    </div>
+    <div id="misterios" class="option-grid"></div>
+  </div>
+
+  <!-- PERSONALIZAÇÃO TEXTUAL -->
+  <div id="personalizacao-area" style="display:none;">
+    <div class="secao-header">
+      <label>Personalização</label>
+    </div>
+    <div class="campo-texto">
+      <label id="label-personalizacao-campo">Nome ou mensagem (opcional)</label>
+      <input type="text" id="campo-personalizacao" placeholder="Ex: Ana & João — 15/06/2025" oninput="atualizarPersonalizacao(this.value)">
+    </div>
+  </div>
+
+  <div class="total-box">
+    Total: R$ <span id="total">0,00</span>
+  </div>
+
+  <button class="btn-principal" onclick="finalizar()">Adicionar ao Carrinho</button>
+
+</div>
+
+<!-- Popup sucesso -->
+<div id="popup-overlay">
+  <div id="popup-caixa">
+    <div class="popup-icone">✅</div>
+    <h3>Adicionado!</h3>
+    <p>Seu produto foi adicionado ao carrinho com sucesso.</p>
+    <div class="popup-botoes">
+      <button class="popup-btn-carrinho" onclick="irCarrinho()">🛒 Ir ao Carrinho</button>
+      <button class="popup-btn-continuar" onclick="fecharPopup()">Continuar montando</button>
+    </div>
+  </div>
+</div>
+
+<!-- Popup erro -->
+<div id="popup-erro-overlay">
+  <div id="popup-erro-caixa">
+    <div class="popup-icone">⚠️</div>
+    <h3 id="popup-erro-titulo">Atenção</h3>
+    <p id="popup-erro-msg">Preencha todos os campos.</p>
+    <button class="popup-btn-fechar" onclick="fecharPopupErro()">Entendi</button>
+  </div>
+</div>
+
+<script>
+
+/* =============================================
+   CONSTANTE GLOBAL
+   ============================================= */
+const WHATSAPP = '5587981739920';
+
+/* =============================================
+   ESTADO GLOBAL
+   ============================================= */
+let selecao = {
+  tipo:'', categoria:'', modelo:'',
+  corBase:'', cor:'', misterioCat:'', misterio:'',
+  personalizacao: ''
+};
+let precoModelo = 0, precoCor = 0, precoMisterio = 0;
+
+/* =============================================
+   UTILITÁRIOS
+   ============================================= */
+function recalcularTotal() {
+  const t = precoModelo + precoCor + precoMisterio;
+  document.getElementById('total').textContent = t.toFixed(2).replace('.', ',');
+}
+
+/**
+ * Gera lista de itens com emoji como thumbnail (sem placeholder externo).
+ * @param {string} prefixo - Nome base
+ * @param {number} quantidade
+ * @param {number} preco - Preço fixo para todos os itens desta linha
+ * @param {string} emoji - Emoji representativo
+ */
+function gerarItens(prefixo, quantidade, preco, emoji = '📿') {
+  const lista = [];
+  for (let i = 1; i <= quantidade; i++) {
+    lista.push({
+      nome:  `${prefixo} ${i}`,
+      preco: preco,
+      img:   null,       // Sem imagem real ainda
+      emoji: emoji
+    });
+  }
+  return lista;
+}
+
+function marcarSelecionado(el) {
+  el.parentElement.querySelectorAll('.option, .tipo-card').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function irInicio()   { window.location.href = 'index.html'; }
+function irCarrinho() { window.location.href = 'carrinho.html'; }
+
+/**
+ * Renderiza a miniatura de um item (imagem real ou emoji fallback).
+ */
+function renderMedia(item) {
+  if (item.img) {
+    return `
+      <div class="option-media">
+        <img src="${item.img}" alt="${item.nome}"
+          onerror="this.parentElement.innerHTML='<span>${item.emoji || '📿'}</span>'">
+      </div>`;
+  }
+  return `<div class="option-media">${item.emoji || '📿'}</div>`;
+}
+
+/* =============================================
+   BANCO DE DADOS DE PRODUTOS
+   Preços reais coerentes (não mais base+i)
+   ============================================= */
+
+const bancoModelos = {
+
+  pulso: {
+    "São Bento":                gerarItens("São Bento Pulso", 5, 35, '✝️'),
+    "Nossa Senhora Aparecida":  gerarItens("Aparecida Pulso", 5, 35, '🕊️'),
+    "Nossa Senhora das Graças": gerarItens("Graças Pulso", 5, 35, '💙'),
+    "Cristal":                  gerarItens("Cristal Pulso", 5, 45, '💎')
+  },
+
+  tradicional: {
+    "Nossa Senhora Aparecida":  gerarItens("Nossa Sra. Aparecida", 15, 40, '🕊️'),
+    "Nossa Senhora das Graças": gerarItens("Nossa Sra. das Graças", 10, 40, '💙'),
+    "Guadalupe":                gerarItens("Guadalupe", 5, 40, '🌹'),
+    "Santa Rita de Cássia":     gerarItens("Sta. Rita de Cássia", 5, 40, '🌸'),
+    "Santa Terezinha":          gerarItens("Santa Terezinha", 5, 40, '🌺'),
+    "Sagrada Família":          gerarItens("Sagrada Família", 5, 40, '👨‍👩‍👦'),
+    "Nossa Senhora de Fátima":  gerarItens("Fátima", 5, 40, '⭐'),
+    "São José":                 gerarItens("São José", 5, 40, '🛠️'),
+    "Espírito Santo":           gerarItens("Espírito Santo", 5, 40, '🕊️'),
+    "Carlos Acutis":            gerarItens("Carlos Acutis", 5, 40, '💻'),
+    "São Miguel":               gerarItens("São Miguel", 5, 40, '⚔️'),
+    "Santo Antônio":            gerarItens("Santo Antônio", 5, 40, '🙏'),
+    "Santa Luzia":              gerarItens("Santa Luzia", 5, 40, '👁️')
+  },
+
+  chaveiro: {
+    "São Bento":               gerarItens("Chaveiro São Bento", 6, 25, '✝️'),
+    "Nossa Sra. Aparecida":    gerarItens("Chaveiro Aparecida", 6, 25, '🕊️'),
+    "Santo Antônio":           gerarItens("Chaveiro Santo Antônio", 4, 25, '🙏'),
+    "São Miguel":              gerarItens("Chaveiro São Miguel", 4, 25, '⚔️'),
+    "Anjo da Guarda":          gerarItens("Chaveiro Anjo Guarda", 4, 25, '😇'),
+    "Sagrada Família":         gerarItens("Chaveiro Sagrada Família", 4, 25, '👨‍👩‍👦')
+  },
+
+  veiculo: {
+    "São Cristóvão":           gerarItens("Veículo São Cristóvão", 6, 30, '🚗'),
+    "São Bento":               gerarItens("Veículo São Bento", 5, 30, '✝️'),
+    "Nossa Sra. Aparecida":    gerarItens("Veículo Aparecida", 5, 30, '🕊️'),
+    "Anjo da Guarda":          gerarItens("Veículo Anjo Guarda", 4, 30, '😇'),
+    "Nossa Sra. das Graças":   gerarItens("Veículo Graças", 4, 30, '💙')
+  },
+
+  noiva: {
+    "Clássico Branco":         gerarItens("Noiva Clássico", 6, 65, '🤍'),
+    "Pérola":                  gerarItens("Noiva Pérola", 5, 70, '🪞'),
+    "Crystal":                 gerarItens("Noiva Crystal", 5, 75, '💎'),
+    "Romântico":               gerarItens("Noiva Romântico", 4, 65, '💕'),
+    "Renda e Pérola":          gerarItens("Noiva Renda", 4, 80, '👰')
+  },
+
+  luxo: {
+    "Cristal Swarovski":       gerarItens("Luxo Swarovski", 6, 120, '✨'),
+    "Ouro e Cristal":          gerarItens("Luxo Ouro Crystal", 5, 110, '💛'),
+    "Prata e Pérola":          gerarItens("Luxo Prata Pérola", 5, 100, '🪙'),
+    "Madrepérola":             gerarItens("Luxo Madrepérola", 4, 95, '🌙'),
+    "Banhado a Ouro":          gerarItens("Luxo Banhado Ouro", 4, 115, '👑')
+  },
+
+  infantil: {
+    "Anjo da Guarda":          gerarItens("Infantil Anjo", 6, 30, '😇'),
+    "São Bento":               gerarItens("Infantil São Bento", 5, 30, '✝️'),
+    "Nossa Sra. Aparecida":    gerarItens("Infantil Aparecida", 5, 30, '🕊️'),
+    "Arco-Íris":               gerarItens("Infantil Arco-Íris", 6, 32, '🌈'),
+    "Borboleta":               gerarItens("Infantil Borboleta", 5, 30, '🦋'),
+    "Estrelinhas":             gerarItens("Infantil Estrelinhas", 5, 30, '⭐')
+  },
+
+  embalagem: {
+    "Caixa P":                 gerarItens("Embalagem Caixa P", 4, 12, '📦'),
+    "Caixa G":                 gerarItens("Embalagem Caixa G", 4, 18, '🎁'),
+    "Saquinho Organza":        gerarItens("Saquinho Organza", 5, 8, '🎀'),
+    "Caixinha Coração":        gerarItens("Caixinha Coração", 4, 15, '💛'),
+    "Porta-Terço":             gerarItens("Porta-Terço", 4, 22, '🧧')
+  }
+};
+
+/* --- CORES disponíveis --- */
+const coresDisponiveis = {
+  "Preto":    gerarItens("Preto", 6, 8, '🖤'),
+  "Azul":     gerarItens("Azul", 6, 8, '💙'),
+  "Amarelo":  gerarItens("Amarelo", 3, 8, '💛'),
+  "Laranja":  gerarItens("Laranja", 2, 8, '🧡'),
+  "Rosa":     gerarItens("Rosa", 8, 8, '🩷'),
+  "Branco":   gerarItens("Branco", 6, 8, '🤍'),
+  "Vermelho": gerarItens("Vermelho", 6, 8, '❤️'),
+  "Roxo":     gerarItens("Roxo", 4, 8, '💜'),
+  "Verde":    gerarItens("Verde", 4, 8, '💚')
+};
+
+const coresPorTipo = {
+  noiva: {
+    "Branco":      gerarItens("Branco Noiva", 6, 8, '🤍'),
+    "Off-White":   gerarItens("Off-White", 4, 8, '🍶'),
+    "Champagne":   gerarItens("Champagne", 4, 8, '🥂'),
+    "Rosa Bebê":   gerarItens("Rosa Bebê", 4, 8, '🩷'),
+    "Dourado":     gerarItens("Dourado", 3, 10, '💛')
+  },
+  luxo: {
+    "Dourado":     gerarItens("Dourado Luxo", 5, 15, '💛'),
+    "Prateado":    gerarItens("Prateado Luxo", 5, 15, '🪙'),
+    "Rosê Gold":   gerarItens("Rosê Gold", 4, 15, '🌸'),
+    "Cristal":     gerarItens("Cristal Luxo", 4, 15, '💎'),
+    "Bordô":       gerarItens("Bordô Luxo", 3, 15, '🍷')
+  },
+  infantil: {
+    "Rosa":        gerarItens("Rosa Infantil", 6, 8, '🩷'),
+    "Azul Bebê":   gerarItens("Azul Bebê", 5, 8, '🩵'),
+    "Amarelo":     gerarItens("Amarelo Infantil", 4, 8, '💛'),
+    "Lilás":       gerarItens("Lilás", 4, 8, '💜'),
+    "Verde":       gerarItens("Verde Infantil", 4, 8, '💚'),
+    "Arco-Íris":   gerarItens("Multicolor", 3, 8, '🌈')
+  }
+};
+
+const bancoMisteriosPorTipo = {
+  default: {
+    "Granulados":  gerarItens("Granulado", 6, 12, '⚪'),
+    "Variados":    gerarItens("Variado", 6, 12, '🔮'),
+    "Flores":      gerarItens("Flores", 6, 14, '🌸'),
+    "Perolados":   gerarItens("Perolado", 6, 14, '🪞')
+  },
+  chaveiro: {
+    "Crucifixo Simples":    gerarItens("Crucifixo Simples", 5, 8, '✝️'),
+    "Crucifixo Trabalhado": gerarItens("Crucifixo Trabalhado", 5, 12, '⛪'),
+    "Medalha":              gerarItens("Medalha", 5, 10, '🏅')
+  },
+  veiculo: {
+    "Crucifixo Simples":  gerarItens("Crucifixo Veículo", 5, 8, '✝️'),
+    "Medalha":            gerarItens("Medalha Veículo", 5, 10, '🏅'),
+    "Centro Especial":    gerarItens("Centro Especial", 4, 15, '⭐')
+  },
+  noiva: {
+    "Rosas":      gerarItens("Mistério Rosa", 5, 18, '🌹'),
+    "Coração":    gerarItens("Coração Noiva", 5, 18, '💕'),
+    "Borboleta":  gerarItens("Borboleta Noiva", 4, 18, '🦋'),
+    "Pomba":      gerarItens("Pomba Noiva", 4, 18, '🕊️')
+  },
+  luxo: {
+    "Swarovski":         gerarItens("Swarovski", 5, 30, '💎'),
+    "Cristal Facetado":  gerarItens("Cristal Facetado", 5, 25, '✨'),
+    "Ouro 18k":          gerarItens("Ouro 18k", 4, 40, '👑')
+  },
+  infantil: {
+    "Estrelinhas":   gerarItens("Estrelinhas Inf.", 5, 10, '⭐'),
+    "Borboletas":    gerarItens("Borboletas Inf.", 5, 10, '🦋'),
+    "Coração":       gerarItens("Coração Inf.", 5, 10, '💕'),
+    "Animalzinhos":  gerarItens("Animalzinhos", 5, 10, '🐣')
+  }
+};
+
+const tiposComPersonalizacao = ['noiva', 'embalagem'];
+const tiposSemCorMisterio    = ['embalagem'];
+
+/* =============================================
+   FLUXO DE SELEÇÃO
+   ============================================= */
+function resetarFluxo() {
+  const tipoSalvo = selecao.tipo;
+  selecao = { tipo: tipoSalvo, categoria:'', modelo:'', corBase:'', cor:'', misterioCat:'', misterio:'', personalizacao:'' };
+  precoModelo = precoCor = precoMisterio = 0;
+  recalcularTotal();
+  ['modelos-area','cores-area','misterios-area','personalizacao-area'].forEach(id =>
+    document.getElementById(id).style.display = 'none'
+  );
+}
+
+function voltar(etapa) {
+  if (etapa === 'categorias') {
+    ['categorias-area','modelos-area','cores-area','misterios-area','personalizacao-area'].forEach(id =>
+      document.getElementById(id).style.display = 'none'
+    );
+    selecao = { tipo:'', categoria:'', modelo:'', corBase:'', cor:'', misterioCat:'', misterio:'', personalizacao:'' };
+    precoModelo = precoCor = precoMisterio = 0;
+    document.querySelectorAll('.option, .tipo-card').forEach(o => o.classList.remove('selected'));
+  } else if (etapa === 'modelos') {
+    ['modelos-area','cores-area','misterios-area','personalizacao-area'].forEach(id =>
+      document.getElementById(id).style.display = 'none'
+    );
+    selecao.modelo = selecao.corBase = selecao.cor = selecao.misterioCat = selecao.misterio = '';
+    precoModelo = precoCor = precoMisterio = 0;
+  } else if (etapa === 'cores') {
+    ['cores-area','misterios-area'].forEach(id =>
+      document.getElementById(id).style.display = 'none'
+    );
+    selecao.corBase = selecao.cor = selecao.misterioCat = selecao.misterio = '';
+    precoCor = precoMisterio = 0;
+  } else if (etapa === 'misterios') {
+    document.getElementById('misterios-area').style.display = 'none';
+    selecao.misterioCat = selecao.misterio = '';
+    precoMisterio = 0;
+  }
+  recalcularTotal();
+}
+
+function selectTipo(valor, el) {
+  selecao.tipo = valor;
+  resetarFluxo();
+
+  document.querySelectorAll('.tipo-card').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+
+  const banco = bancoModelos[valor];
+  let html = '';
+  Object.keys(banco).forEach(cat => {
+    html += `<div class="option" data-tipo="${valor}" data-cat="${cat}" onclick="selectCategoria(this)">${cat}</div>`;
+  });
+  document.getElementById('categorias').innerHTML = html;
+
+  const labels = {
+    embalagem: 'Tipo de Embalagem',
+    noiva:     'Estilo da Noiva',
+    luxo:      'Linha de Luxo',
+    infantil:  'Tema Infantil',
+    chaveiro:  'Tipo de Chaveiro',
+    veiculo:   'Padroeiro do Veículo'
+  };
+  document.getElementById('label-categoria').textContent = labels[valor] || 'Categoria';
+  document.getElementById('categorias-area').style.display = 'block';
+}
+
+function selectCategoria(el) {
+  const tipo = el.dataset.tipo, cat = el.dataset.cat;
+  selecao.categoria = cat;
+  selecao.modelo = selecao.corBase = selecao.cor = selecao.misterioCat = selecao.misterio = '';
+  precoModelo = precoCor = precoMisterio = 0;
+  recalcularTotal();
+  ['modelos-area','cores-area','misterios-area'].forEach(id =>
+    document.getElementById(id).style.display = 'none'
+  );
+  marcarSelecionado(el);
+
+  let html = '';
+  bancoModelos[tipo][cat].forEach(m => {
+    html += `
+      <div class="option" data-nome="${m.nome}" data-preco="${m.preco}" onclick="selectModelo(this)">
+        ${renderMedia(m)}
+        <span>${m.nome}</span>
+        <span class="price">R$ ${m.preco},00</span>
+      </div>`;
+  });
+  document.getElementById('modelos').innerHTML = html;
+
+  const labelsModelo = {
+    embalagem: 'Modelo de Embalagem',
+    noiva:     'Modelo da Noiva',
+    luxo:      'Modelo de Luxo',
+    infantil:  'Modelo Infantil',
+    chaveiro:  'Modelo do Chaveiro',
+    veiculo:   'Modelo do Veículo'
+  };
+  document.getElementById('label-modelo').textContent = labelsModelo[tipo] || 'Modelo';
+  document.getElementById('modelos-area').style.display = 'block';
+}
+
+function selectModelo(el) {
+  selecao.modelo = el.dataset.nome;
+  precoModelo    = Number(el.dataset.preco);
+  selecao.corBase = selecao.cor = selecao.misterioCat = selecao.misterio = '';
+  precoCor = precoMisterio = 0;
+  recalcularTotal();
+  marcarSelecionado(el);
+
+  const tipo = selecao.tipo;
+
+  if (tiposSemCorMisterio.includes(tipo)) {
+    document.getElementById('cores-area').style.display = 'none';
+    document.getElementById('misterios-area').style.display = 'none';
+    mostrarPersonalizacao(tipo);
+    return;
+  }
+
+  const cores = coresPorTipo[tipo] || coresDisponiveis;
+  let html = '';
+  Object.keys(cores).forEach(cor => {
+    html += `<div class="option" data-cor="${cor}" onclick="selectCorBase(this)">${cor}</div>`;
+  });
+  document.getElementById('cores').innerHTML = html;
+
+  const labelsCor = {
+    noiva:    'Cor da Linha',
+    luxo:     'Acabamento',
+    infantil: 'Cor Favorita',
+    chaveiro: 'Cor das Contas',
+    veiculo:  'Cor das Contas'
+  };
+  document.getElementById('label-cor').textContent = labelsCor[tipo] || 'Cor';
+  document.getElementById('cores-area').style.display = 'block';
+  document.getElementById('misterios-area').style.display = 'none';
+}
+
+function selectCorBase(el) {
+  selecao.corBase = el.dataset.cor;
+  selecao.cor = selecao.misterioCat = selecao.misterio = '';
+  precoCor = precoMisterio = 0;
+  recalcularTotal();
+  marcarSelecionado(el);
+
+  const tipo = selecao.tipo;
+  const cores = coresPorTipo[tipo] || coresDisponiveis;
+
+  let html = '';
+  cores[el.dataset.cor].forEach(t => {
+    html += `
+      <div class="option" data-nome="${t.nome}" data-preco="${t.preco}" onclick="selectCorFinal(this)">
+        ${renderMedia(t)}
+        <span>${t.nome}</span>
+        <span class="price">R$ ${t.preco},00</span>
+      </div>`;
+  });
+  document.getElementById('cores').innerHTML = html;
+}
+
+function selectCorFinal(el) {
+  selecao.cor = el.dataset.nome;
+  precoCor    = Number(el.dataset.preco);
+  selecao.misterioCat = selecao.misterio = '';
+  precoMisterio = 0;
+  recalcularTotal();
+  marcarSelecionado(el);
+
+  const tipo = selecao.tipo;
+  const bancoMisterios = bancoMisteriosPorTipo[tipo] || bancoMisteriosPorTipo.default;
+
+  let html = '';
+  Object.keys(bancoMisterios).forEach(cat => {
+    html += `<div class="option" data-cat="${cat}" onclick="selectMisterioCat(this)">${cat}</div>`;
+  });
+  document.getElementById('misterios').innerHTML = html;
+
+  const labelsMisterio = {
+    noiva:    'Medalha Central',
+    luxo:     'Pingente Central',
+    infantil: 'Detalhes',
+    chaveiro: 'Pingente',
+    veiculo:  'Pingente'
+  };
+  document.getElementById('label-misterio').textContent = labelsMisterio[tipo] || 'Mistério';
+  document.getElementById('misterios-area').style.display = 'block';
+  document.getElementById('personalizacao-area').style.display = 'none';
+}
+
+function selectMisterioCat(el) {
+  selecao.misterioCat = el.dataset.cat;
+  selecao.misterio = ''; precoMisterio = 0;
+  recalcularTotal();
+  marcarSelecionado(el);
+
+  const tipo = selecao.tipo;
+  const bancoMisterios = bancoMisteriosPorTipo[tipo] || bancoMisteriosPorTipo.default;
+
+  let html = '';
+  bancoMisterios[el.dataset.cat].forEach(m => {
+    html += `
+      <div class="option" data-nome="${m.nome}" data-preco="${m.preco}" onclick="selectMisterioFinal(this)">
+        ${renderMedia(m)}
+        <span>${m.nome}</span>
+        <span class="price">R$ ${m.preco},00</span>
+      </div>`;
+  });
+  document.getElementById('misterios').innerHTML = html;
+}
+
+function selectMisterioFinal(el) {
+  selecao.misterio = el.dataset.nome;
+  precoMisterio    = Number(el.dataset.preco);
+  recalcularTotal();
+  marcarSelecionado(el);
+  mostrarPersonalizacao(selecao.tipo);
+}
+
+/* =============================================
+   PERSONALIZAÇÃO TEXTUAL
+   ============================================= */
+function mostrarPersonalizacao(tipo) {
+  if (tiposComPersonalizacao.includes(tipo)) {
+    const msgs = {
+      noiva:     'Nome dos noivos ou versículo (opcional)',
+      embalagem: 'Nome ou mensagem para personalizar (opcional)'
+    };
+    document.getElementById('label-personalizacao-campo').textContent = msgs[tipo] || 'Personalização (opcional)';
+    document.getElementById('campo-personalizacao').value = selecao.personalizacao || '';
+    document.getElementById('personalizacao-area').style.display = 'block';
+  } else {
+    document.getElementById('personalizacao-area').style.display = 'none';
+  }
+}
+
+function atualizarPersonalizacao(valor) {
+  selecao.personalizacao = valor;
+}
+
+/* =============================================
+   VALIDAÇÃO E FINALIZAÇÃO
+   ============================================= */
+function finalizar() {
+  const tipo = selecao.tipo;
+
+  if (!tipo) {
+    mostrarPopupErro('Campo obrigatório', 'Escolha o tipo do produto.');
+    return;
+  }
+  if (!selecao.categoria) {
+    mostrarPopupErro('Campo obrigatório', 'Escolha uma categoria.');
+    return;
+  }
+  if (!selecao.modelo) {
+    mostrarPopupErro('Campo obrigatório', 'Escolha um modelo.');
+    return;
+  }
+
+  if (!tiposSemCorMisterio.includes(tipo)) {
+    if (!selecao.cor) {
+      mostrarPopupErro('Campo obrigatório', 'Escolha a cor final.');
+      return;
+    }
+    if (!selecao.misterio) {
+      mostrarPopupErro('Campo obrigatório', 'Escolha um mistério / pingente.');
+      return;
+    }
+  }
+
+  const totalNum = precoModelo + precoCor + precoMisterio;
+
+  const nomes = {
+    pulso:       'Terço de Pulso',
+    tradicional: 'Terço Tradicional',
+    chaveiro:    'Chaveiro',
+    veiculo:     'Terço de Veículo',
+    noiva:       'Terço de Noiva',
+    luxo:        'Terço Luxo',
+    infantil:    'Terço Infantil',
+    embalagem:   'Embalagem'
+  };
+
+  const item = {
+    tipo,
+    nome:           nomes[tipo] || tipo,
+    categoria:      selecao.categoria,
+    modelo:         selecao.modelo,
+    cor:            selecao.cor          || '',
+    misterio:       selecao.misterio     || '',
+    personalizacao: selecao.personalizacao || '',
+    total:          totalNum
+  };
+
+  let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+  carrinho.push(item);
+  localStorage.setItem('carrinho', JSON.stringify(carrinho));
+  mostrarPopupSucesso();
+}
+
+/* =============================================
+   POPUPS
+   ============================================= */
+function mostrarPopupSucesso() {
+  document.getElementById('popup-overlay').classList.add('ativo');
+}
+function fecharPopup() {
+  document.getElementById('popup-overlay').classList.remove('ativo');
+  selecao = { tipo:'', categoria:'', modelo:'', corBase:'', cor:'', misterioCat:'', misterio:'', personalizacao:'' };
+  precoModelo = precoCor = precoMisterio = 0;
+  recalcularTotal();
+  ['categorias-area','modelos-area','cores-area','misterios-area','personalizacao-area'].forEach(id =>
+    document.getElementById(id).style.display = 'none'
+  );
+  document.querySelectorAll('.option, .tipo-card').forEach(o => o.classList.remove('selected'));
+}
+function mostrarPopupErro(titulo, msg) {
+  document.getElementById('popup-erro-titulo').textContent = titulo;
+  document.getElementById('popup-erro-msg').textContent    = msg;
+  document.getElementById('popup-erro-overlay').classList.add('ativo');
+}
+function fecharPopupErro() {
+  document.getElementById('popup-erro-overlay').classList.remove('ativo');
+}
+
+document.getElementById('popup-overlay').addEventListener('click', function(e) {
+  if (e.target === this) fecharPopup();
+});
+document.getElementById('popup-erro-overlay').addEventListener('click', function(e) {
+  if (e.target === this) fecharPopupErro();
+});
+
+</script>
+</body>
+</html>
